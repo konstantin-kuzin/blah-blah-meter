@@ -648,6 +648,14 @@
 
     if (!elStartPopover.hidden) {
       closeStartPopover();
+      return;
+    }
+
+    if (
+      window.ResourceWasteTrackerSpeech &&
+      window.ResourceWasteTrackerSpeech.handleDocumentEscape()
+    ) {
+      return;
     }
   });
 
@@ -670,4 +678,7 @@
 
   applyTheme(initialTheme);
   applySettingsToView();
+  if (window.ResourceWasteTrackerSpeech) {
+    window.ResourceWasteTrackerSpeech.init();
+  }
 })();

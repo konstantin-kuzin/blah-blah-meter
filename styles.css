@@ -102,13 +102,69 @@ body::before {
   rotate: 10deg;
 }
 
+.speech-watermark {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: clamp(14.5rem, 60vh, 50rem);
+}
+
+.speech-watermark__inner {
+  width: min(100%, 76rem);
+  max-height: min(58dvh, 9rem);
+  overflow: auto;
+  overscroll-behavior: contain;
+  text-align: center;
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    #000 12%,
+    #000 88%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    #000 12%,
+    #000 88%,
+    transparent 100%
+  );
+}
+
+.speech-watermark__text {
+  margin: 0;
+  font-size: clamp(0.8rem, 2.2vw, 1rem);
+  font-weight: 400;
+  line-height: 1.55;
+  color: color-mix(in srgb, var(--muted) 72%, var(--bg));
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.speech-watermark__interim {
+  opacity: 0.72;
+  font-style: italic;
+}
+
+:root[data-theme="light"] .speech-watermark__text {
+  color: color-mix(in srgb, #94a3b8 88%, var(--bg));
+}
+
+:root[data-theme="dark"] .speech-watermark__text {
+  color: color-mix(in srgb, #94a3b8 55%, var(--bg));
+}
+
 body.body--modal-open {
   overflow: hidden;
 }
 
 .app {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   width: 100%;
   min-height: 100dvh;
   margin: 0 auto;
@@ -160,6 +216,21 @@ body.body--modal-open {
   line-height: 1;
 }
 
+.icon-btn__svg {
+  display: block;
+  width: 1.8rem;
+  height: 1.8rem;
+}
+
+.icon-btn--mic.icon-btn--speech {
+  width: 1.6rem;
+  height: 1.6rem;
+}
+
+.icon-btn--mic.icon-btn--speech-active {
+  color: var(--accent-strong);
+}
+
 #settings-trigger > span {
   font-size: 1.4em;
   padding-bottom:4px
@@ -183,7 +254,7 @@ body.body--modal-open {
   align-items: center;
   width: 100%;
   min-height: 0;
-  margin-bottom: 0;
+  margin-bottom: 4rem;
 }
 
 .meter__scroll {
@@ -311,6 +382,7 @@ body.body--modal-open {
 
 .meter__start-trigger:focus-visible,
 .icon-btn:focus-visible,
+.icon-btn--mic:focus-visible,
 .btn:focus-visible,
 .primary-btn:focus-visible,
 .secondary-btn:focus-visible,
