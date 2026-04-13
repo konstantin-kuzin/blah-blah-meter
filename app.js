@@ -1,8 +1,8 @@
 (function () {
   "use strict";
 
-  var STORAGE_KEY = "resourceWasteTracker.settings.v1";
-  var THEME_STORAGE_KEY = "resourceWasteTracker.theme.v1";
+  var STORAGE_KEY = "startTracker.settings.v1";
+  var THEME_STORAGE_KEY = "startTracker.theme.v1";
   var SALARY_COEFFICIENT = 1.5;
   var MONTHLY_WORK_HOURS = 160;
   var MINUTES_PER_MONTH = MONTHLY_WORK_HOURS * 60;
@@ -751,8 +751,8 @@
     counts = createCountsMap(settings.grades, counts);
     saveSettings();
     applySettingsToView();
-    if (window.ResourceWasteTrackerSpeech && window.ResourceWasteTrackerSpeech.configure) {
-      window.ResourceWasteTrackerSpeech.configure(settings.speech);
+    if (window.startTrackerSpeech && window.startTrackerSpeech.configure) {
+      window.startTrackerSpeech.configure(settings.speech);
     }
     closeSettingsModal();
   });
@@ -786,8 +786,8 @@
     }
 
     if (
-      window.ResourceWasteTrackerSpeech &&
-      window.ResourceWasteTrackerSpeech.handleDocumentEscape()
+      window.startTrackerSpeech &&
+      window.startTrackerSpeech.handleDocumentEscape()
     ) {
       return;
     }
@@ -812,10 +812,10 @@
 
   applyTheme(initialTheme);
   applySettingsToView();
-  if (window.ResourceWasteTrackerSpeech) {
-    if (window.ResourceWasteTrackerSpeech.configure) {
-      window.ResourceWasteTrackerSpeech.configure(settings.speech);
+  if (window.startTrackerSpeech) {
+    if (window.startTrackerSpeech.configure) {
+      window.startTrackerSpeech.configure(settings.speech);
     }
-    window.ResourceWasteTrackerSpeech.init();
+    window.startTrackerSpeech.init();
   }
 })();

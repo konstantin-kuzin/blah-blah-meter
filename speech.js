@@ -12,10 +12,10 @@
       : null;
 
   var GROQ_API_PATH = "/api/groq";
-  /* localStorage resourceWasteTracker.speechDebug = "1" — подробные логи в консоли */
+  /* localStorage startTracker.speechDebug = "1" — подробные логи в консоли */
   function speechDebug() {
     try {
-      return localStorage.getItem("resourceWasteTracker.speechDebug") === "1";
+      return localStorage.getItem("startTracker.speechDebug") === "1";
     } catch (e) {
       return false;
     }
@@ -916,7 +916,7 @@
     return true;
   }
 
-  global.ResourceWasteTrackerSpeech = {
+  global.startTrackerSpeech = {
     init: init,
     configure: configure,
     handleDocumentEscape: handleDocumentEscape
