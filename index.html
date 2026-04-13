@@ -1,173 +1,215 @@
 <!DOCTYPE html>
 <html lang="ru">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Стоимость встречи</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Victor+Mono:wght@400;600&family=Roboto:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <div
-      class="speech-watermark"
-      id="speech-transcript-layer"
-      aria-live="polite"
-      aria-relevant="additions text"
-    >
-      <div class="speech-watermark__inner" id="transcript-scroll">
-        <p class="speech-watermark__text" id="transcript-para">
-          <span id="transcript-final"></span
-          ><span class="speech-watermark__interim" id="transcript-interim"></span>
-        </p>
-      </div>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Стоимость встречи</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Victor+Mono:wght@400;600&family=Roboto:wght@400;500;600;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <div class="speech-watermark" id="speech-transcript-layer" aria-live="polite" aria-relevant="additions text">
+    <div class="speech-watermark__inner" id="transcript-scroll">
+      <p class="speech-watermark__text" id="transcript-para">
+        <span id="transcript-final"></span><span class="speech-watermark__interim" id="transcript-interim"></span>
+      </p>
+    </div>
+  </div>
+
+  <main class="app">
+    <div class="app__toolbar">
+      <button type="button" class="icon-btn" id="settings-trigger" aria-label="Открыть настройки" aria-haspopup="dialog"
+        aria-controls="settings-modal">
+        <svg class="icon-btn__svg icon-btn__svg--settings" width="22" height="22" viewBox="0 0 24 24" fill="none"
+          xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
+          <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round" />
+        </svg>
+      </button>
+      <button type="button" class="icon-btn" id="theme-toggle" aria-label="Включить тёмную тему"
+        title="Включить тёмную тему">
+        <span aria-hidden="true" data-role="theme-icon">☾</span>
+      </button>
+      <button type="button" class="icon-btn icon-btn--mic" id="transcript-toggle" aria-pressed="false"
+        aria-label="Включить распознавание речи" title="Включить распознавание (Shift+клик — очистить текст)"
+        aria-controls="transcript-scroll">
+        <svg class="icon-btn__svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+          xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path fill="currentColor"
+            d="M12 14a3 3 0 0 0 3-3V6a3 3 0 1 0-6 0v5a3 3 0 0 0 3 3zm5-3a5 5 0 1 1-10 0H5a7 7 0 0 0 6 6.92V20H9v2h6v-2h-2v-2.08A7 7 0 0 0 19 11h-2z" />
+        </svg>
+      </button>
     </div>
 
-    <main class="app">
-      <div class="app__toolbar">
-        <button
-          type="button"
-          class="icon-btn"
-          id="settings-trigger"
-          aria-label="Открыть настройки"
-          aria-haspopup="dialog"
-          aria-controls="settings-modal"
-        >
-          <span aria-hidden="true">⚙</span>
-        </button>
-        <button
-          type="button"
-          class="icon-btn"
-          id="theme-toggle"
-          aria-label="Включить тёмную тему"
-          title="Включить тёмную тему"
-        >
-          <span aria-hidden="true" data-role="theme-icon">☾</span>
-        </button>
-        <button
-          type="button"
-          class="icon-btn icon-btn--mic"
-          id="transcript-toggle"
-          aria-pressed="false"
-          aria-label="Включить распознавание речи"
-          title="Включить распознавание (Shift+клик — очистить текст)"
-          aria-controls="transcript-scroll"
-        >
-          <svg
-            class="icon-btn__svg"
-            width="22"
-            height="22"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            aria-hidden="true"
-          >
-            <path
-              fill="currentColor"
-              d="M12 14a3 3 0 0 0 3-3V6a3 3 0 1 0-6 0v5a3 3 0 0 0 3 3zm5-3a5 5 0 1 1-10 0H5a7 7 0 0 0 6 6.92V20H9v2h6v-2h-2v-2.08A7 7 0 0 0 19 11h-2z"
-            />
-          </svg>
-        </button>
-      </div>
-
-      <section class="meter" aria-live="polite">
-        <div class="meter__scroll">
-          <h1 class="app__title" id="app-title">Лаборатория Касперского заплатит за эту встречу</h1>
-          <p class="meter__total">
-            <span class="meter__value" id="total-cost">
-              <span class="meter__rub" id="total-rub">0</span>
-              <span class="meter__fraction">
-                <span class="meter__kop" id="total-kop">00</span>
-                <span class="meter__fraction-line" aria-hidden="true"></span>
-                <span class="meter__rub-label">руб</span>
-              </span>
+    <section class="meter" aria-live="polite">
+      <div class="meter__scroll">
+        <h1 class="app__title" id="app-title">Лаборатория Касперского заплатит за эту встречу</h1>
+        <p class="meter__total">
+          <span class="meter__value" id="total-cost">
+            <span class="meter__rub" id="total-rub">0</span>
+            <span class="meter__fraction">
+              <span class="meter__kop" id="total-kop">00</span>
+              <span class="meter__fraction-line" aria-hidden="true"></span>
+              <span class="meter__rub-label">руб</span>
             </span>
-          </p>
-        </div>
-        <p class="meter__per-minute" id="per-minute-row" hidden>
-          Одна минута этой встречи стоит
-          <span class="meter__per-minute-value" id="per-minute-cost">0.00</span>
-          руб.
+          </span>
         </p>
-        <div class="meter__elapsed" id="elapsed-row" hidden>
-          
-          <button
-            type="button"
-            class="meter__start-trigger"
-            id="start-time-trigger"
-            aria-expanded="false"
-            aria-controls="start-time-popover"
-          >
+      </div>
+      <p class="meter__per-minute" id="per-minute-row" hidden>
+        Одна минута этой встречи стоит
+        <span class="meter__per-minute-value" id="per-minute-cost">0.00</span>
+        руб.
+      </p>
+      <div class="meter__elapsed" id="elapsed-row" hidden>
+
+        <button type="button" class="meter__start-trigger" id="start-time-trigger" aria-expanded="false"
+          aria-controls="start-time-popover">
           Продолжительность встречи
-          </button>
-          — <span id="elapsed-display">00:00</span>
-          <div id="start-time-popover" class="start-popover" role="dialog" aria-label="Время начала встречи" hidden>
-            <label class="start-popover__label" for="start-time-input">Начало встречи</label>
-            <input type="time" class="start-popover__input" id="start-time-input" step="60" />
-            <div class="start-popover__actions">
-              <button type="button" class="start-popover__btn start-popover__btn--primary" id="start-time-save">
-                Сохранить
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="grades" aria-label="Участники по грейдам" id="grades-list"></section>
-
-      <div class="modal" id="settings-modal" hidden>
-        <div class="modal__backdrop" data-modal-close="true"></div>
-        <div
-          class="modal__dialog"
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="settings-title"
-        >
-          <div class="modal__header">
-            <div>
-              <h2 class="modal__title" id="settings-title">Настройки</h2>
-            </div>
-            <button
-              type="button"
-              class="icon-btn icon-btn--ghost"
-              id="settings-close"
-              aria-label="Закрыть настройки"
-            >
-              <span aria-hidden="true">✕</span>
+        </button>
+        — <span id="elapsed-display">00:00</span>
+        <div id="start-time-popover" class="start-popover" role="dialog" aria-label="Время начала встречи" hidden>
+          <label class="start-popover__label" for="start-time-input">Начало встречи</label>
+          <input type="time" class="start-popover__input" id="start-time-input" step="60" />
+          <div class="start-popover__actions">
+            <button type="button" class="start-popover__btn start-popover__btn--primary" id="start-time-save">
+              Сохранить
             </button>
           </div>
-
-          <form class="settings-form" id="settings-form">
-            <label class="settings-form__field">
-              <span class="settings-form__label">Текст заголовка</span>
-              <input
-                type="text"
-                class="settings-form__input"
-                id="settings-title-input"
-                name="title"
-                placeholder="Введите заголовок"
-                required
-              />
-            </label>
-
-            <div class="settings-form__section">
-              <div class="settings-form__grades" id="settings-grades"></div>
-              <button type="button" class="text-btn" id="add-grade-btn">Добавить</button>
-            </div>
-
-            <div class="settings-form__actions">
-              <button type="submit" class="primary-btn">Сохранить</button>
-              <button type="button" class="secondary-btn" id="settings-cancel">Отмена</button>
-            </div>
-          </form>
         </div>
       </div>
-    </main>
-    <script src="speech.js" defer></script>
-    <script src="app.js" defer></script>
-  </body>
+    </section>
+
+    <section class="grades" aria-label="Участники по грейдам" id="grades-list"></section>
+
+    <div class="modal" id="settings-modal" hidden>
+      <div class="modal__backdrop" data-modal-close="true"></div>
+      <div class="modal__dialog" role="dialog" aria-modal="true" aria-labelledby="settings-title">
+        <div class="modal__header">
+          <div>
+            <h2 class="modal__title" id="settings-title">Настройки</h2>
+          </div>
+          <button type="button" class="icon-btn icon-btn--ghost" id="settings-close" aria-label="Закрыть настройки">
+            <span aria-hidden="true">✕</span>
+          </button>
+        </div>
+
+        <form class="settings-form" id="settings-form">
+          <div class="settings-tabs">
+            <div class="settings-tabs__bar" role="tablist" aria-label="Разделы настроек">
+              <button type="button" class="settings-tabs__tab settings-tabs__tab--active" role="tab"
+                id="settings-tab-meeting" aria-selected="true" aria-controls="settings-panel-meeting" tabindex="0">
+                Участники встречи
+              </button>
+              <button type="button" class="settings-tabs__tab" role="tab" id="settings-tab-speech" aria-selected="false"
+                aria-controls="settings-panel-speech" tabindex="-1">
+                Speech Recognition
+              </button>
+            </div>
+
+            <div id="settings-panel-meeting" class="settings-tabs__panel" role="tabpanel"
+              aria-labelledby="settings-tab-meeting">
+              <label class="settings-form__field">
+                <span class="settings-form__label">Текст заголовка</span>
+                <input type="text" class="settings-form__input" id="settings-title-input" name="title"
+                  placeholder="Введите заголовок" required />
+              </label>
+
+              <div class="settings-form__section">
+                <div class="settings-form__grades" id="settings-grades"></div>
+                <button type="button" class="text-btn" id="add-grade-btn">Добавить</button>
+              </div>
+            </div>
+
+            <div id="settings-panel-speech" class="settings-tabs__panel" role="tabpanel"
+              aria-labelledby="settings-tab-speech" hidden>
+              <div class="section">
+                <div class="settings-form__section" aria-label="Транскрипция речи">
+                  <fieldset class="settings-form__fieldset">
+                    <legend class="settings-form__label">Сервис распознавания</legend>
+                    <div class="settings-form__radios">
+                      <label class="settings-form__radio">
+                        <input type="radio" name="speech-mode" id="speech-mode-browser" value="browser" checked />
+                        <span>Web Speech API</span>
+                      </label>
+                      <label class="settings-form__radio">
+                        <input type="radio" name="speech-mode" id="speech-mode-groq" value="groq" />
+                        <span>Groq Whisper <span class="settings-form__label-suffix">(требуется Groq API
+                            KEY)</span></span>
+                      </label>
+                    </div>
+                  </fieldset>
+                  <label class="settings-form__field" id="speech-stt-model-field" hidden>
+                    <select class="settings-form__input" id="speech-stt-model" name="speech-stt-model">
+                      <option value="whisper-large-v3-turbo">whisper-large-v3-turbo</option>
+                      <option value="whisper-large-v3">whisper-large-v3</option>
+                    </select>
+                  </label>
+                </div>
+              </div>
+              <div class="section">
+                <div class="settings-form__speech-post">
+                  <div class="settings-form__field settings-form__checkbox-row">
+                    <label class="settings-form__inline-check">
+                      <input type="checkbox" id="speech-groq-post" name="speech-groq-post" />
+                      <span>Постобработка в LLM <span class="settings-form__label-suffix">(требуется Groq API
+                          KEY)</span></span>
+                    </label>
+                  </div>
+                </div>
+                <label class="settings-form__field" id="speech-chat-model-field" hidden>
+                  <select class="settings-form__input" id="speech-chat-model" name="speech-chat-model">
+                    <option value="llama-3.1-8b-instant">llama-3.1-8b-instant</option>
+                    <option value="llama-3.3-70b-versatile">llama-3.3-70b-versatile</option>
+                    <option value="openai/gpt-oss-20b">openai/gpt-oss-20b</option>
+                    <option value="groq/compound">groq/compound</option>
+                    <option value="llama-4-scout-17b-16e-instruct">meta-llama/llama-4-scout-17b-16e-instruct</option>
+                    <option value="qwen/qwen3-32b">qwen/qwen3-32b</option>
+                  </select>
+                </label>
+              </div>
+              <div class="section" style="display: none;">
+                <div class="settings-form__field settings-form__checkbox-row" id="speech-translate-row" role="group"
+                  aria-label="Перевод текста">
+                  <label class="settings-form__inline-check">
+                    <input type="checkbox" id="speech-translate-on" name="speech-translate-on" />
+                    <span>Перевод текста</span>
+                  </label>
+                </div>
+                <label class="settings-form__field" id="speech-translate-lang-field" hidden>
+                  <select class="settings-form__input" id="speech-translate-lang" name="speech-translate-lang">
+                    <option value="en">English</option>
+                    <option value="zh">中文 (упрощённый)</option>
+                  </select>
+                </label>
+              </div>
+              <div class="section">
+                <label class="settings-form__field" id="speech-groq-key-field">
+                  <span class="settings-form__label">Groq API KEY</span>
+                  <input type="password" class="settings-form__input" id="speech-groq-key" name="speech-groq-key"
+                    autocomplete="off" placeholder="gsk_…" />
+                </label>
+              </div>
+
+            </div>
+          </div>
+          <div class="settings-form__actions">
+            <button type="submit" class="primary-btn">Сохранить</button>
+            <button type="button" class="secondary-btn" id="settings-cancel">Отмена</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+  <script src="speech.js" defer></script>
+  <script src="app.js" defer></script>
+</body>
+
 </html>

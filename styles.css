@@ -222,6 +222,11 @@ body.body--modal-open {
   height: 1.8rem;
 }
 
+.icon-btn__svg--settings {
+  width: 1.65rem;
+  height: 1.65rem;
+}
+
 .icon-btn--mic.icon-btn--speech {
   width: 1.6rem;
   height: 1.6rem;
@@ -229,11 +234,6 @@ body.body--modal-open {
 
 .icon-btn--mic.icon-btn--speech-active {
   color: var(--accent-strong);
-}
-
-#settings-trigger > span {
-  font-size: 1.4em;
-  padding-bottom:4px
 }
 
 .icon-btn:hover {
@@ -661,16 +661,170 @@ body.body--modal-open {
   gap: 2rem;
 }
 
+.settings-tabs {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  min-width: 0;
+}
+
+.settings-tabs__bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  padding: 0.2rem;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--surface-soft) 92%, var(--border));
+  border: 1px solid var(--border);
+}
+
+.settings-tabs__tab {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 0.55rem 0.9rem;
+  border: none;
+  border-radius: 10px;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--muted);
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.settings-tabs__tab:hover {
+  color: var(--text);
+}
+
+.settings-tabs__tab--active {
+  color: var(--text);
+  background: var(--surface-strong);
+  box-shadow: 0 1px 3px color-mix(in srgb, var(--border) 55%, transparent);
+}
+
+.settings-tabs__panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  min-width: 0;
+}
+
+.settings-tabs__panel[hidden] {
+  display: none !important;
+}
+
+.section {
+  gap: 12px;
+  display: flex;
+  flex-direction: column;
+}
+
 .settings-form__field,
 .settings-grade__field {
   display: flex;
   flex-direction: column;
 }
 
+/* Атрибут [hidden] иначе перекрывается display:flex выше (как у .settings-tabs__panel[hidden]). */
+.settings-form__field[hidden] {
+  display: none !important;
+}
+
+.settings-form__speech-post {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.settings-form__speech-post-title {
+  margin: 0 0 32px;
+}
+
+/* 32px между «Модель постобработки» и «Перевод», и между Groq API KEY и языком — с учётом gap секции (0.75rem). */
+#speech-chat-model-field:not([hidden]) + #speech-translate-row {
+  margin-top: calc(32px - 0.75rem);
+}
+
+#speech-groq-key-field + #speech-translate-lang-field:not([hidden]) {
+  margin-top: calc(32px - 0.75rem);
+}
+
+.settings-form__label-suffix {
+  font-weight: 400;
+  font-size: 0.85em;
+  color: var(--muted);
+}
+
 .settings-form__hint {
   margin: 0;
   font-size: 0.875rem;
   color: var(--muted);
+  line-height: 1.45;
+}
+
+.settings-form__hint--tight {
+  margin-top: 0.5rem;
+}
+
+.settings-form__hint a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.settings-form__hint a:hover {
+  color: var(--accent-strong);
+}
+
+.settings-form__code {
+  font-family: "Victor Mono", ui-monospace, monospace;
+  font-size: 0.8125em;
+  padding: 0.05em 0.35em;
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--surface-soft) 88%, var(--border));
+}
+
+.settings-form__fieldset {
+  margin: 0;
+  padding: 0;
+  border: none;
+  min-width: 0;
+}
+
+.settings-form__radios {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.settings-form__radio {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-size: 0.9375rem;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.settings-form__radio input {
+  margin: 0.2rem 0 0;
+  flex-shrink: 0;
+}
+
+.settings-form__checkbox-row .settings-form__inline-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-size: 0.9375rem;
+  color: var(--text);
+  cursor: pointer;
+  margin-top: 0.25rem;
+}
+
+.settings-form__inline-check input {
+  margin: 0.2rem 0 0;
+  flex-shrink: 0;
 }
 
 .settings-form__section {

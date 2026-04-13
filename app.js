@@ -134,6 +134,32 @@
     };
   }
 
+  function normalizeSpeech(rawSpeech) {
+    var s = rawSpeech && typeof rawSpeech === "object" ? rawSpeech : {};
+    var mode = s.mode === "groq" ? "groq" : "browser";
+    var groqPostProcess = Boolean(s.groqPostProcess);
+    var groqClientKey =
+      typeof s.groqClientKey === "string" ? s.groqClientKey : "";
+    var sttModel =
+      s.sttModel === "whisper-large-v3" ? "whisper-large-v3" : "whisper-large-v3-turbo";
+    var chatModel =
+      typeof s.chatModel === "string" && s.chatModel.trim()
+        ? s.chatModel.trim()
+        : "llama-3.1-8b-instant";
+    var translateEnabled = Boolean(s.translateEnabled);
+    var translateTarget = s.translateTarget === "zh" ? "zh" : "en";
+
+    return {
+      mode: mode,
+      groqPostProcess: groqPostProcess,
+      groqClientKey: groqClientKey,
+      sttModel: sttModel,
+      chatModel: chatModel,
+      translateEnabled: translateEnabled,
+      translateTarget: translateTarget
+    };
+  }
+
   function normalizeSettings(rawSettings) {
     var source = rawSettings && typeof rawSettings === "object" ? rawSettings : {};
     var title =
@@ -150,7 +176,8 @@
 
     return {
       title: title,
-      grades: grades
+      grades: grades,
+      speech: normalizeSpeech(source.speech)
     };
   }
 
@@ -502,21 +529,97 @@
       });
   }
 
+  function updateSpeechSettingsFieldsVisibility() {
+    var elModeGroq = document.getElementById("speech-mode-groq");
+    var elGroqPost = document.getElementById("speech-groq-post");
+    var elTranslateOn = document.getElementById("speech-translate-on");
+    var elSttField = document.getElementById("speech-stt-model-field");
+    var elChatField = document.getElementById("speech-chat-model-field");
+    var elLangField = document.getElementById("speech-translate-lang-field");
+    var groq = elModeGroq && elModeGroq.checked;
+    var postOn = elGroqPost && elGroqPost.checked;
+    var translateOn = elTranslateOn && elTranslateOn.checked;
+    if (elSttField) elSttField.hidden = !groq;
+    if (elChatField) elChatField.hidden = !postOn;
+    if (elLangField) elLangField.hidden = !translateOn;
+  }
+
   function populateSettingsForm() {
+    var speech = settings.speech || normalizeSpeech(null);
+    var elModeBrowser = document.getElementById("speech-mode-browser");
+    var elModeGroq = document.getElementById("speech-mode-groq");
+    var elGroqPost = document.getElementById("speech-groq-post");
+    var elGroqKey = document.getElementById("speech-groq-key");
+    var elStt = document.getElementById("speech-stt-model");
+    var elChat = document.getElementById("speech-chat-model");
+    var elTranslateOn = document.getElementById("speech-translate-on");
+    var elTranslateLang = document.getElementById("speech-translate-lang");
+
     elSettingsTitleInput.value = settings.title;
     renderSettingsGradeRows(settings.grades);
+
+    if (elModeBrowser && elModeGroq) {
+      elModeGroq.checked = speech.mode === "groq";
+      elModeBrowser.checked = speech.mode !== "groq";
+    }
+    if (elGroqPost) elGroqPost.checked = speech.groqPostProcess;
+    if (elGroqKey) elGroqKey.value = speech.groqClientKey || "";
+    if (elStt) elStt.value = speech.sttModel;
+    if (elChat) elChat.value = speech.chatModel;
+    if (elTranslateOn) elTranslateOn.checked = speech.translateEnabled;
+    if (elTranslateLang) {
+      elTranslateLang.value = speech.translateTarget === "zh" ? "zh" : "en";
+    }
+    updateSpeechSettingsFieldsVisibility();
   }
 
   function collectSettingsFromForm() {
+    var elModeGroq = document.getElementById("speech-mode-groq");
+    var elGroqPost = document.getElementById("speech-groq-post");
+    var elGroqKey = document.getElementById("speech-groq-key");
+    var elStt = document.getElementById("speech-stt-model");
+    var elChat = document.getElementById("speech-chat-model");
+    var elTranslateOn = document.getElementById("speech-translate-on");
+    var elTranslateLang = document.getElementById("speech-translate-lang");
+    var translateOn = elTranslateOn ? elTranslateOn.checked : false;
+    var translateLang =
+      elTranslateLang && elTranslateLang.value === "zh" ? "zh" : "en";
+
     return normalizeSettings({
       title: elSettingsTitleInput.value,
-      grades: collectDraftGrades()
+      grades: collectDraftGrades(),
+      speech: {
+        mode: elModeGroq && elModeGroq.checked ? "groq" : "browser",
+        groqPostProcess: elGroqPost ? elGroqPost.checked : false,
+        groqClientKey: elGroqKey ? elGroqKey.value : "",
+        sttModel: elStt && elStt.value ? elStt.value : "whisper-large-v3-turbo",
+        chatModel: elChat && elChat.value ? elChat.value : "llama-3.1-8b-instant",
+        translateEnabled: translateOn,
+        translateTarget: translateLang
+      }
     });
+  }
+
+  function setSettingsTab(meetingActive) {
+    var tabMeeting = document.getElementById("settings-tab-meeting");
+    var tabSpeech = document.getElementById("settings-tab-speech");
+    var panelMeeting = document.getElementById("settings-panel-meeting");
+    var panelSpeech = document.getElementById("settings-panel-speech");
+    if (!tabMeeting || !tabSpeech || !panelMeeting || !panelSpeech) return;
+    tabMeeting.setAttribute("aria-selected", meetingActive ? "true" : "false");
+    tabSpeech.setAttribute("aria-selected", meetingActive ? "false" : "true");
+    tabMeeting.tabIndex = meetingActive ? 0 : -1;
+    tabSpeech.tabIndex = meetingActive ? -1 : 0;
+    tabMeeting.classList.toggle("settings-tabs__tab--active", meetingActive);
+    tabSpeech.classList.toggle("settings-tabs__tab--active", !meetingActive);
+    panelMeeting.hidden = !meetingActive;
+    panelSpeech.hidden = meetingActive;
   }
 
   function openSettingsModal() {
     closeStartPopover();
     populateSettingsForm();
+    setSettingsTab(true);
     elSettingsModal.hidden = false;
     document.body.classList.add("body--modal-open");
     elSettingsTitleInput.focus();
@@ -560,6 +663,34 @@
   elSettingsTrigger.addEventListener("click", function () {
     openSettingsModal();
   });
+
+  (function initSettingsTabs() {
+    var tabMeeting = document.getElementById("settings-tab-meeting");
+    var tabSpeech = document.getElementById("settings-tab-speech");
+    if (!tabMeeting || !tabSpeech) return;
+    tabMeeting.addEventListener("click", function () {
+      setSettingsTab(true);
+    });
+    tabSpeech.addEventListener("click", function () {
+      setSettingsTab(false);
+    });
+  })();
+
+  (function initSpeechTranslateControls() {
+    var elOn = document.getElementById("speech-translate-on");
+    if (!elOn) return;
+    elOn.addEventListener("change", updateSpeechSettingsFieldsVisibility);
+  })();
+
+  (function initSpeechModelFieldsVisibility() {
+    var elModeBrowser = document.getElementById("speech-mode-browser");
+    var elModeGroq = document.getElementById("speech-mode-groq");
+    var elGroqPost = document.getElementById("speech-groq-post");
+    if (!elModeBrowser || !elModeGroq || !elGroqPost) return;
+    elModeBrowser.addEventListener("change", updateSpeechSettingsFieldsVisibility);
+    elModeGroq.addEventListener("change", updateSpeechSettingsFieldsVisibility);
+    elGroqPost.addEventListener("change", updateSpeechSettingsFieldsVisibility);
+  })();
 
   elThemeToggle.addEventListener("click", function () {
     var currentTheme = document.documentElement.getAttribute("data-theme");
@@ -620,6 +751,9 @@
     counts = createCountsMap(settings.grades, counts);
     saveSettings();
     applySettingsToView();
+    if (window.ResourceWasteTrackerSpeech && window.ResourceWasteTrackerSpeech.configure) {
+      window.ResourceWasteTrackerSpeech.configure(settings.speech);
+    }
     closeSettingsModal();
   });
 
@@ -679,6 +813,9 @@
   applyTheme(initialTheme);
   applySettingsToView();
   if (window.ResourceWasteTrackerSpeech) {
+    if (window.ResourceWasteTrackerSpeech.configure) {
+      window.ResourceWasteTrackerSpeech.configure(settings.speech);
+    }
     window.ResourceWasteTrackerSpeech.init();
   }
 })();
