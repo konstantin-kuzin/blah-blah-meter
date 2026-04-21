@@ -296,17 +296,12 @@
       : [];
 
     elRoundsTrack.innerHTML = visibleRounds
-      .map(function (round, index) {
+      .map(function (round) {
         return (
           '<article class="rounds__card">' +
-          '<div class="rounds__meta">' +
-          '<h3 class="rounds__title">Раунд ' +
-          String(index + 1) +
-          "</h3>" +
           '<span class="rounds__time">' +
           formatElapsed(roundElapsedMs(round, nowMs)) +
           "</span>" +
-          "</div>" +
           '<span class="rounds__money">' +
           formatMoney(roundCostRubles(round, nowMs)) +
           " руб." +
@@ -384,9 +379,9 @@
       "aria-label",
       "Стоимость встречи " +
         formatRubInteger(rub) +
-        " руб " +
+        " руб. " +
         String(kop).padStart(2, "0") +
-        " коп"
+        " коп."
     );
   }
 
@@ -433,7 +428,12 @@
     var totalSec = Math.floor(ms / 1000);
     var minutes = Math.floor(totalSec / 60);
     var seconds = totalSec % 60;
-    return String(minutes).padStart(2, "0") + ":" + String(seconds).padStart(2, "0");
+    return (
+      String(minutes).padStart(2, "0") +
+      " мин. " +
+      String(seconds).padStart(2, "0") +
+      " сек."
+    );
   }
 
   function stopCostTimers() {
@@ -499,6 +499,7 @@
       var gradeId = row.getAttribute("data-grade-id");
       var count = counts[gradeId] || 0;
       var avatar = row.querySelector(".grade-row__avatar");
+      var label = row.querySelector(".grade-row__label");
       var countNode = row.querySelector('[data-role="count"]');
       var minusBtn = row.querySelector(".btn--minus");
       var plusBtn = row.querySelector(".btn--plus");
@@ -506,6 +507,7 @@
       countNode.textContent = String(count);
       avatar.classList.toggle("grade-row__avatar--zero", count === 0);
       avatar.classList.toggle("grade-row__avatar--has", count > 0);
+      label.classList.toggle("grade-row__label--zero", count === 0);
       minusBtn.disabled = count <= 0;
       plusBtn.disabled = count >= MAX_PER_GRADE;
     });

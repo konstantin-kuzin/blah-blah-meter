@@ -58,30 +58,31 @@
             <span class="meter__fraction">
               <span class="meter__kop" id="total-kop">00</span>
               <span class="meter__fraction-line" aria-hidden="true"></span>
-              <span class="meter__rub-label">руб</span>
+              <span class="meter__rub-label">руб.</span>
             </span>
           </span>
         </p>
       </div>
-      <p class="meter__per-minute" id="per-minute-row" hidden>
-        Одна минута этой встречи стоит
-        <span class="meter__per-minute-value" id="per-minute-cost">0.00</span>
-        руб.
-      </p>
-      <div class="meter__elapsed" id="elapsed-row" hidden>
-
-        <button type="button" class="meter__start-trigger" id="start-time-trigger" aria-expanded="false"
-          aria-controls="start-time-popover">
-          Продолжительность встречи
-        </button>
-        — <span id="elapsed-display">00:00</span>
-        <div id="start-time-popover" class="start-popover" role="dialog" aria-label="Время начала встречи" hidden>
-          <label class="start-popover__label" for="start-time-input">Начало встречи</label>
-          <input type="time" class="start-popover__input" id="start-time-input" step="60" />
-          <div class="start-popover__actions">
-            <button type="button" class="start-popover__btn start-popover__btn--primary" id="start-time-save">
-              Сохранить
-            </button>
+      <div class="meter__meta">
+        <p class="meter__per-minute" id="per-minute-row" hidden>
+          Одна минута этой встречи стоит
+          <span class="meter__per-minute-value" id="per-minute-cost">0.00</span>
+          руб.
+        </p>
+        <div class="meter__elapsed" id="elapsed-row" hidden>
+          <button type="button" class="meter__start-trigger" id="start-time-trigger" aria-expanded="false"
+            aria-controls="start-time-popover">
+            Продолжительность встречи
+          </button>
+          — <span id="elapsed-display">00:00</span>
+          <div id="start-time-popover" class="start-popover" role="dialog" aria-label="Время начала встречи" hidden>
+            <label class="start-popover__label" for="start-time-input">Начало встречи</label>
+            <input type="time" class="start-popover__input" id="start-time-input" step="60" />
+            <div class="start-popover__actions">
+              <button type="button" class="start-popover__btn start-popover__btn--primary" id="start-time-save">
+                Сохранить
+              </button>
+            </div>
           </div>
         </div>
       </div>
